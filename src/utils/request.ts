@@ -21,6 +21,7 @@ requests.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 请求带token
     if (getToken()) {
+      // Authorization -> satoken
       config.headers["Authorization"] = token_prefix + getToken();
     }
     return config;
@@ -33,6 +34,7 @@ requests.interceptors.request.use(
 // 配置响应拦截器
 requests.interceptors.response.use(
   (response: AxiosResponse) => {
+    console.log("当前状态:",response.data)
     switch (response.data.code) {
       case 400:
         ElNotification({

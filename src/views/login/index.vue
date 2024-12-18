@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <el-form ref="ruleFormRef" :model="loginForm" :rules="rules" class="login-form">
-            <h3 class="title">博客后台管理系统</h3>
+            <h3 class="title">BHU-ACM后台管理系统</h3>
             <el-form-item prop="username">
                 <el-input v-model="loginForm.username" type="text" size="large" placeholder="账号">
                     <template #prefix><svg-icon icon-class="user"></svg-icon></template>
@@ -23,7 +23,7 @@
         </el-form>
         <!--  底部  -->
         <div class="el-login-footer">
-            <span>Copyright © 2022 - {{ new Date().getFullYear() }} By 阿冬</span>
+            <span>Copyright © 2024 - {{ new Date().getFullYear() }} By Dduo</span>
         </div>
     </div>
 </template>
@@ -46,20 +46,32 @@ const rules = reactive<FormRules>({
 });
 const handleLogin = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
+
     await formEl.validate((valid) => {
         if (valid) {
             loading.value = true;
-            user.LogIn(loginForm).then(() => {
-                router.push({ path: "/" });
-                loading.value = false;
-            }).catch(() => {
-                loading.value = false;
-            });
+            user.LogIn(loginForm)
+                .then(() => {
+                    alert('登录成功');
+                    // 登录成功，跳转到首页
+                    router.push({ path: "/" });
+                })
+                .catch((error) => {
+                    // 捕获登录失败的异常
+                    console.error('Login failed:', error);
+                    // 可以在这里进行错误提示
+                    alert('登录失败，请检查用户名或密码');
+                })
+                .finally(() => {
+                    // 无论成功或失败都停止加载状态
+                    loading.value = false;
+                });
         } else {
+            // 如果表单验证不通过，返回 false
             return false;
         }
-    })
-}
+    });
+};
 </script>
 <style lang="scss" scoped>
 .login {
@@ -67,7 +79,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-image: url("https://s3.bmp.ovh/imgs/2024/11/14/b129d62ba930cd40.jpg");
+    background-image: url("https://ooo.0x0.ooo/2024/12/15/OLw6zb.jpg");
     background-size: cover;
 }
 
